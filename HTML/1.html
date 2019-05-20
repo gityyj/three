@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="http://cdn.bootcss.com/three.js/r83/three.min.js"></script>
+</head>
+<!-- Three.js的核心五步就是：
+ 1.设置three.js渲染器
+ 2.设置摄像机camera
+ 3.设置场景scene
+ 4.设置光源light
+ 5.设置物体object 
+ -->
+<script>
+    // 1.设置three.js渲染器
+    var renderer;
+    function initThree() {
+        width = document.getElementById("box").clientWidth;
+        height = document.getElementById("box").clientHeight;
+        renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });/*生成渲染器对象（属性：抗锯齿效果为设置有效）*/
+        renderer.setSize(width, height);
+        document.getElementById("box").appendChild(renderer.domElement);
+        /*设置canvas背景色(clearColor)和背景色透明度（clearAlpha） */
+        // renderer.setClearColor(0xFFFFFF, 1.0);
+    }
+    // 2.设置摄像机camera
+    var camera;
+    function initCamera() {
+        camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+        camera.position.x = 0;
+        camera.position.y = 1000;
+        camera.position.z = 0;
+        camera.up.x = 0;
+        camera.up.y = -1;
+        camera.up.z = 0;
+        camera.lookAt({ x:10, y: 0, z: 0 }); //设置视野的中心坐标 
+    }
+    // 3.设置场景
+    var scene;
+    function initScene() {
+        scene = new THREE.Scene();
+    }
+    // 4.设置光源light
+    var light;
+    function initLight() {
+        light = new THREE.DirectionalLight(0xFF0000, 1.0, 0); //平行光
+        light.position.set(300, 100, 200); //设置光源位置
+        scene.add(light); //将官员添加到场景
+    }
+    //5.设置物体 
+    var sphere;
+    function initObject() {
+        sphere = new THREE.Mesh(new THREE.SphereGeometry(200, 200), new THREE.MeshLambertMaterial({ color: 0xff0000 })/*设置球体的材质*/); //材质设定 
+        scene.add(sphere);
+        sphere.position.set(0, 0, 0); /*设置物体位置*/
+    }
+    //6.执行 
+    function threeExcute() {
+        initThree();
+        initCamera();
+        initScene();
+        initLight();
+        initObject();
+        renderer.clear();
+        renderer.render(scene, camera);
+    } 
+</script>
+<style type="text/css">
+    div#box {
+        border: none;
+        cursor: move;
+        width: 1400px;
+        height: 600px;
+        background-color:black;
+    }
+</style>
+
+<body onload="threeExcute();">
+    <div id="box"></div>
+</body>
+
+</html>
